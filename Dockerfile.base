@@ -1,0 +1,27 @@
+# OpenCode AI 的 Dockerfile
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 安裝依賴
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    ca-certificates \
+    git \
+    openssh-client \
+    sudo \
+ && rm -rf /var/lib/apt/lists/*
+
+# 建立非 root 使用者（如果不存在）
+RUN id -u ubuntu &>/dev/null || useradd -m -s /bin/bash ubuntu \
+ && echo "ubuntu ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/ubuntu \
+ && chmod 0440 /etc/sudoers.d/ubuntu
+
+USER ubuntu
+WORKDIR /home/ubuntu
+
+# 準備 SSH 組態和 git 的 known_hosts
+RUN mkdir -p /home/ubuntu/.ssh \
+ && touch /home/ubuntu/.ssh/known_hosts \
+ && ssh-keyscan -T 5 github.com 2>/dev/null >> /home/ubuntu/.ssh/known_hosts || true
+
