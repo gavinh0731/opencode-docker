@@ -3,8 +3,18 @@
 # OpenCode AI 的 Dockerfile
 FROM opencode-base
 
-# 安裝 OpenCode AI
-RUN curl -fsSL https://opencode.ai/install | bash
+# 安裝 OpenCode (先用 root 安裝到系統)
+RUN curl -fsSL https://opencode.ai/install | bash \
+    && mv /root/.opencode /opt/opencode \
+    && ln -s /opt/opencode/bin/opencode /usr/local/bin/opencode
 
-# 將 OpenCode AI 二進位檔加入到 PATH
-ENV PATH="/home/ubuntu/.opencode/bin:${PATH}"
+# EntryPoint
+COPY resources/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+WORKDIR /workspace
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+CMD ["bash"]
