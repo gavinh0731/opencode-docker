@@ -23,7 +23,11 @@ fi
 #
 # 建立 user
 #
-if ! id "${LOCAL_USER_NAME}" >/dev/null 2>&1; then
+EXISTING_USER=$(getent passwd "${LOCAL_UID_VALUE}" | cut -d: -f1 || true)
+if [ -n "${EXISTING_USER}" ]; then
+    echo "UID ${LOCAL_UID_VALUE} already exists: ${EXISTING_USER}"
+    LOCAL_USER_NAME="${EXISTING_USER}"
+else
     useradd \
         -u "${LOCAL_UID_VALUE}" \
         -g "${LOCAL_GID_VALUE}" \
