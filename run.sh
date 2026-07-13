@@ -13,6 +13,11 @@ GROUP_ID=$(id -g)
 USER_NAME=$(id -un)
 USER_HOME=$HOME
 
+# Ubuntu base image 預設 UID 1000 使用者
+if [ "${USER_ID}" = "1000" ]; then
+    USER_NAME="ubuntu"
+fi
+
 
 echo "🚀 正在啟動 OpenCode Container..."
 echo "📂 Project: $ABS_PROJECT_PATH"
