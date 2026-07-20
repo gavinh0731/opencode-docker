@@ -1,4 +1,4 @@
-# sudo docker build -f Dockerfile.base -t opencode-base .;
+# sudo docker build -f Dockerfile -t opencode-ai:latest . --no-cache;
 
 # OpenCode AI 的 Dockerfile
 FROM opencode-base
