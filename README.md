@@ -4,6 +4,7 @@
 
 ```
 opencode-docker/
+├── Dockerfile.base   # Dockerfile 用來安裝 ubuntu
 ├── Dockerfile        # Dockerfile 用來安裝 OpenCode AI
 ├── build.sh          # 腳本用來建立 Docker 映像檔
 ├── run.sh            # 腳本用來安全地運行 OpenCode AI
